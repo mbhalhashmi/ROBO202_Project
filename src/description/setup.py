@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'exe = pubsub_description.print_val:main',
         ],
     },
 )
