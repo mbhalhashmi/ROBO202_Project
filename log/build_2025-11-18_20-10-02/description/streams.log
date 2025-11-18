@@ -1,0 +1,38 @@
+[0.384s] Invoking command in '/home/mohamed/ROBO202_Project/src/description': PYTHONPATH=/home/mohamed/ROBO202_Project/build/description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mohamed/ROBO202_Project/install/description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/description build --build-base /home/mohamed/ROBO202_Project/build/description/build install --record /home/mohamed/ROBO202_Project/build/description/install.log --single-version-externally-managed install_data
+[0.537s] running egg_info
+[0.537s] creating ../../build/description/description.egg-info
+[0.537s] writing ../../build/description/description.egg-info/PKG-INFO
+[0.537s] writing dependency_links to ../../build/description/description.egg-info/dependency_links.txt
+[0.537s] writing entry points to ../../build/description/description.egg-info/entry_points.txt
+[0.538s] writing requirements to ../../build/description/description.egg-info/requires.txt
+[0.538s] writing top-level names to ../../build/description/description.egg-info/top_level.txt
+[0.538s] writing manifest file '../../build/description/description.egg-info/SOURCES.txt'
+[0.539s] reading manifest file '../../build/description/description.egg-info/SOURCES.txt'
+[0.539s] writing manifest file '../../build/description/description.egg-info/SOURCES.txt'
+[0.539s] running build
+[0.539s] running build_py
+[0.539s] creating /home/mohamed/ROBO202_Project/build/description/build
+[0.539s] creating /home/mohamed/ROBO202_Project/build/description/build/lib
+[0.539s] creating /home/mohamed/ROBO202_Project/build/description/build/lib/description
+[0.539s] copying description/__init__.py -> /home/mohamed/ROBO202_Project/build/description/build/lib/description
+[0.539s] running install
+[0.539s] running install_lib
+[0.540s] creating /home/mohamed/ROBO202_Project/install/description/lib/python3.10/site-packages/description
+[0.540s] copying /home/mohamed/ROBO202_Project/build/description/build/lib/description/__init__.py -> /home/mohamed/ROBO202_Project/install/description/lib/python3.10/site-packages/description
+[0.540s] byte-compiling /home/mohamed/ROBO202_Project/install/description/lib/python3.10/site-packages/description/__init__.py to __init__.cpython-310.pyc
+[0.540s] running install_data
+[0.540s] creating /home/mohamed/ROBO202_Project/install/description/share/ament_index
+[0.540s] creating /home/mohamed/ROBO202_Project/install/description/share/ament_index/resource_index
+[0.540s] creating /home/mohamed/ROBO202_Project/install/description/share/ament_index/resource_index/packages
+[0.540s] copying resource/description -> /home/mohamed/ROBO202_Project/install/description/share/ament_index/resource_index/packages
+[0.540s] copying package.xml -> /home/mohamed/ROBO202_Project/install/description/share/description
+[0.540s] creating /home/mohamed/ROBO202_Project/install/description/share/description/urdf
+[0.540s] copying urdf/obstacle.urdf -> /home/mohamed/ROBO202_Project/install/description/share/description/urdf
+[0.541s] copying urdf/tricycle.urdf -> /home/mohamed/ROBO202_Project/install/description/share/description/urdf
+[0.541s] creating /home/mohamed/ROBO202_Project/install/description/share/description/launch
+[0.541s] copying launch/gazebo.launch.py -> /home/mohamed/ROBO202_Project/install/description/share/description/launch
+[0.541s] running install_egg_info
+[0.542s] Copying ../../build/description/description.egg-info to /home/mohamed/ROBO202_Project/install/description/lib/python3.10/site-packages/description-0.0.0-py3.10.egg-info
+[0.542s] running install_scripts
+[0.556s] writing list of installed files to '/home/mohamed/ROBO202_Project/build/description/install.log'
+[0.570s] Invoked command in '/home/mohamed/ROBO202_Project/src/description' returned '0': PYTHONPATH=/home/mohamed/ROBO202_Project/build/description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mohamed/ROBO202_Project/install/description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/description build --build-base /home/mohamed/ROBO202_Project/build/description/build install --record /home/mohamed/ROBO202_Project/build/description/install.log --single-version-externally-managed install_data
