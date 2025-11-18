@@ -1,25 +1,150 @@
 <?xml version="1.0"?>
 <robot name="tricycle">
 
-<!-- Base -->
-<link name="base_link">
-    <visual>
-        <geometry>
-            <box size="0.4 0.3 0.2"/>
-        </geometry>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <material name="white">
-            <color rgba="1 1 1 1"/>
-        </material>
-    </visual>
-    <collision>
-        <geometry>
-            <box size="0.4 0.3 0.2"/>
-        </geometry>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-    </collision>
-    <inertial>
-        <mass value="1"/>
-        <inertia ixx"0.01083" ixy="0" ixz="0" iyy="0.01667" iyz="0" izz="0.02083"/>
-    </inertial>
-</link>
+    <!-- Base -->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="0.4 0.3 0.2"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="white">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.4 0.3 0.2"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+        <inertial>
+            <mass value="1"/>
+            <inertia ixx"0.01083" ixy="0" ixz="0" iyy="0.01667" iyz="0" izz="0.02083"/>
+        </inertial>
+    </link>
+
+    <!-- Left Wheel -->
+    <link name="lwheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.04" radius="0.05"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.05" length="0.04"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="7.58e-5" ixy="0" ixz="0" iyy="7.58e-5" iyz="0" izz="0.000125"/>
+        </inertial>
+    </link>
+
+    <!-- Right Wheel -->
+    <link name="rwheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.04" radius="0.05"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <matertial name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.05" length="0.04"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="7.58e-5" ixy="0" ixz="0" iyy="7.58e-5" iyz="0" izz="0.000125"/>
+        </inertial>
+    </link>
+
+    <!-- Back Wheel -->
+    <link name="bwheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.04" radius="0.05"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.05" length="0.04"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="7.58e-5" ixy="0" ixz="0" iyy="7.58e-5" iyz="0" izz="0.000125"/>
+        </inertial>
+    </link>
+
+    <!-- Joints -->
+
+    <!-- Left Wheel Joint -->
+    <joint name="base_to_lwheel" type="continuous">
+        <parent link="base_link"/>
+        <child link="lwheel"/>
+        <origin xyz="0.15 0.15 -0.1" rpy="-1.57 0 0 "/>
+        <!-- Axis of Rotation: +Z -->
+        <axis xyz="0 0 1"/>
+        <dynamis damping="0.0" friction="0.1"/>
+    </joint>
+
+    <!-- Right Wheel Joint -->
+    <joint name="base_to_rwheel" type="continuous">
+        <parent link="base_link"/>
+        <child link="lwheel"/>
+        <origin xyz="0.15 0.15 -0.1" rpy="-1.57 0 0 "/>
+        <!-- Axis Of Rotation: +Z -->
+        <axis xyz="0 0 1"/>
+        <dynamis damping="0.0" friction="0.1"/>
+    </joint>
+
+    <!-- Back Wheel Joint -->
+    <joint name="base_to_bwheel" type="continuous">
+        <parent link="base_link"/>
+        <child link="bwheel"/>
+        <origin xyz="-0.17 0 -0.125" rpy="0 0 0"/>
+        <!-- Axis Of Rotation: +Z -->
+        <axis xyz="0 0 1"/>
+        <dynamis damping="0.0" friction="0.1"/>
+    </joint>
+
+    <!-- Gazebo Materials -->
+    <gazebo reference="base_link">
+        <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="rwheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <gazebo reference="lwheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <gazebo reference="bwheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    
+
+
+
+
+
