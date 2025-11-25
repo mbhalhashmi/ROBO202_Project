@@ -9,8 +9,8 @@ setup.py
 ../../build/description/description.egg-info/top_level.txt
 ../../build/description/description.egg-info/zip-safe
 description/__init__.py
+description/print_val.py
 launch/gazebo.launch.py
-launch/print_val.py
 resource/description
 test/test_copyright.py
 test/test_flake8.py

@@ -195,10 +195,10 @@
       <!-- Max angular acceleration of the wheels-->
       <max_wheel_acceleration>10.0</max_wheel_acceleration>
 
-      <!-- Odometry Publishing Options-->
+      <!-- Odometry Publishing Options (Tells ROS how far the robot moved )-->
       <!-- Publish wheel odometry on /odom-->
       <publish_odom>true</publish_odom>
-      <!-- Publish the transformbetween odom and base_link-->
+      <!-- Publish the transform between odom and base_link-->
       <publish_odom_tf>true</publish_odom_tf>
     </plugin>
   </gazebo>

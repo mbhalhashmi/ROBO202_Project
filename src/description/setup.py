@@ -28,7 +28,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'exe = description.print_val:main',
+            'exe = description.print_val:main'
         ],
     },
 )
