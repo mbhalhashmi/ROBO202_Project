@@ -9,7 +9,7 @@ setup.py
 ../../build/description/description.egg-info/top_level.txt
 ../../build/description/description.egg-info/zip-safe
 description/__init__.py
-description/camera_subscriber.py
+description/camera_logger.py
 description/print_val.py
 launch/gazebo.launch.py
 resource/description
