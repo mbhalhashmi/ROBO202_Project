@@ -116,6 +116,20 @@
     </inertial>
   </link>
 
+  <!-- Camera Link -->
+  <link name="camera_link">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <!-- Mounting above and ahead of the base -->
+      <origin xyz="0.1 0 0.15" rpy="0 0 0"/>
+      <material name="gray">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+  </link>
+
   <!-- Joints -->
 
   <!-- Steering (rotate about Z) -->
@@ -155,6 +169,13 @@
     <dynamics damping="0.0" friction="0.1"/>
   </joint>
 
+  <!-- Camera Joint -->
+  <joint name="base_to_camera" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
   <!-- Gazebo visual materials -->
   <gazebo reference="base_link">
     <material>Gazebo/White</material>
@@ -166,8 +187,11 @@
     <material>Gazebo/Black</material>
   </gazebo>
   <gazebo reference="bwheel_right">
-    <material>Gazebo/Black
-  </material></gazebo>
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="camera_link">
+    <material>Gazebo/Gray</material>
+  </gazebo>
 
   <!-- Gazeboo Plugin -->
   <gazebo>
@@ -202,6 +226,38 @@
       <publish_odom_tf>true</publish_odom_tf>
     </plugin>
   </gazebo>
+
+  <!-- Gazebo Camera Plugin -->
+  <gazebo reference="camera_link">
+    <sensor name="sensor_camera" type="camera">
+      <pose>0 0 0 0 0 0</pose>
+      <camera>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.05</near>
+          <far>10.0</far>
+        </clip>
+      </camera>
+
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <update_rate>30.0</update_rate>
+
+      <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
+        <ros>
+          <remapping>/sensor_camera/image_raw:=/camera/image_raw</remapping>
+            <remapping>/sensor_camera/camera_info:=/camera/camera_info</remapping>
+        </ros>
+        <frame_name>camera_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
 
 
 </robot>

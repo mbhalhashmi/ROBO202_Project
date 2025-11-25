@@ -58,4 +58,11 @@ def generate_launch_description():
             name='print_val',
             output='screen',
         ),
+
+        Node(
+            package='description',
+            executable='camera_subscriber',
+            name='camera_subscriber',
+            output='screen',
+        )
     ])
