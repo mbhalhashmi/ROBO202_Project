@@ -24,14 +24,14 @@
     </inertial>
   </link>
 
-  <!-- Steering fork -->
+  <!-- Front fork (steered) -->
   <link name="fork">
     <visual>
       <geometry>
         <box size="0.05 0.05 0.1"/>
       </geometry>
       <origin xyz="0 0 -0.05" rpy="0 0 0"/>
-      <material name="gray">
+      <material name="grey">
         <color rgba="0.6 0.6 0.6 1"/>
       </material>
     </visual>
@@ -47,7 +47,7 @@
     </inertial>
   </link>
 
-  <!-- Front Wheel -->
+  <!-- Front wheel -->
   <link name="fwheel">
     <visual>
       <geometry>
@@ -70,7 +70,7 @@
     </inertial>
   </link>
 
-  <!-- Back Right Wheel -->
+  <!-- Rear wheels -->
   <link name="bwheel_right">
     <visual>
       <geometry>
@@ -93,7 +93,6 @@
     </inertial>
   </link>
 
-  <!-- Back Left Wheel -->
   <link name="bwheel_left">
     <visual>
       <geometry>
@@ -116,23 +115,20 @@
     </inertial>
   </link>
 
-  <!-- Camera Link -->
+  <!-- Camera link -->
   <link name="camera_link">
     <visual>
-      <geometry>
-        <box size="0.05 0.05 0.05"/>
-      </geometry>
-      <!-- Mounting above and ahead of the base -->
+      <geometry><box size="0.05 0.05 0.05"/></geometry>
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <material name="gray">
-        <color rgba="0.5 0.5 0.5 1"/>
-      </material>
+      <material name="gray"><color rgba="0.5 0.5 0.5 1"/></material>
     </visual>
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
+    </inertial>
   </link>
 
   <!-- Joints -->
-
-  <!-- Steering (rotate about Z) -->
   <joint name="steer_joint" type="revolute">
     <parent link="base_link"/>
     <child  link="fork"/>
@@ -142,96 +138,68 @@
     <dynamics damping="0.2"/>
   </joint>
 
-  <!-- Front wheel spin (spin axis is +Y) -->
   <joint name="fork_to_fwheel" type="continuous">
     <parent link="fork"/>
     <child  link="fwheel"/>
-    <origin xyz="0 0 -0.14" rpy="-1.5708 0 0"/>
-    <axis xyz="0 0 1"/>
+    <origin xyz="0 0 -0.14" rpy="-1.5707 0 0"/>
+    <axis xyz="0 0 1"/> <!-- FIXED: wheel spins about Y due to link roll -->
     <dynamics damping="0.0" friction="0.1"/>
   </joint>
 
-  <!-- Rear right wheel spin -->
   <joint name="base_to_rwheel" type="continuous">
     <parent link="base_link"/>
     <child  link="bwheel_right"/>
-    <origin xyz="-0.17 -0.17 -0.1" rpy="-1.5708 0 0"/>
-    <axis xyz="0 0 1"/>
+    <origin xyz="-0.17 -0.17 -0.14" rpy="-1.5707 0 0"/>
+    <axis xyz="0 0 1"/> <!-- FIXED -->
     <dynamics damping="0.0" friction="0.1"/>
   </joint>
 
-  <!-- Rear left wheel spin -->
   <joint name="base_to_bwheel_left" type="continuous">
     <parent link="base_link"/>
     <child  link="bwheel_left"/>
-    <origin xyz="-0.17 0.17 -0.1" rpy="-1.5708 0 0"/>
-    <axis xyz="0 0 1"/>
+    <origin xyz="-0.17 0.17 -0.14" rpy="-1.5707 0 0"/>
+    <axis xyz="0 0 1"/> <!-- FIXED -->
     <dynamics damping="0.0" friction="0.1"/>
   </joint>
 
-  <!-- Camera Joint -->
   <joint name="base_to_camera" type="fixed">
     <parent link="base_link"/>
     <child link="camera_link"/>
-    <origin xyz="0.15 0 0.12" rpy="0 0 0"/>
+    <origin xyz="0.2 0 0.20" rpy="0 0 0"/>
   </joint>
 
-  <!-- Gazebo visual materials -->
-  <gazebo reference="base_link">
-    <material>Gazebo/White</material>
-  </gazebo>
-  <gazebo reference="fwheel">
-    <material>Gazebo/Black</material>
-  </gazebo>
-  <gazebo reference="bwheel_left">
-    <material>Gazebo/Black</material>
-  </gazebo>
-  <gazebo reference="bwheel_right">
-    <material>Gazebo/Black</material>
-  </gazebo>
-  <gazebo reference="camera_link">
-    <material>Gazebo/Gray</material>
-  </gazebo>
+  <!-- Gazebo visuals -->
+  <gazebo reference="base_link"><material>Gazebo/White</material></gazebo>
+  <gazebo reference="fwheel"><material>Gazebo/Black</material></gazebo>
+  <gazebo reference="bwheel_left"><material>Gazebo/Black</material></gazebo>
+  <gazebo reference="bwheel_right"><material>Gazebo/Black</material></gazebo>
+  <gazebo reference="camera_link"><material>Gazebo/Red</material></gazebo>
 
-  <!-- Gazeboo Plugin -->
+  <!-- Diff drive on rear wheels (ROS 2, Gazebo Classic) -->
   <gazebo>
-    <!-- Plugin name and the library used-->
     <plugin name="tricycle_system" filename="libgazebo_ros_diff_drive.so">
-
-      <!-- ROS2 integration, remaps the topic that this plugin subcribes to for velocity commands -->
       <ros>
         <remapping>cmd_vel:=/cmd_vel</remapping>
       </ros>
-
-      <!-- The two wheel joints that the plugin controls for motion -->
       <left_joint>base_to_bwheel_left</left_joint>
       <right_joint>base_to_rwheel</right_joint>
-
-      <!-- Physical Parameters of the robot -->
-      <!-- Distance between the two rear wheels -->
-      <wheel_separation>0.24</wheel_separation>
-      <!-- Diameter of each wheel -->
+      <wheel_separation>0.34</wheel_separation>
       <wheel_diameter>0.10</wheel_diameter>
-
-      <!-- Limits for motion -->
-      <!-- Max torque applied to wheels-->
       <max_wheel_torque>200</max_wheel_torque>
-      <!-- Max angular acceleration of the wheels-->
       <max_wheel_acceleration>10.0</max_wheel_acceleration>
-
-      <!-- Odometry Publishing Options (Tells ROS how far the robot moved )-->
-      <!-- Publish wheel odometry on /odom-->
       <publish_odom>true</publish_odom>
-      <!-- Publish the transform between odom and base_link-->
       <publish_odom_tf>true</publish_odom_tf>
     </plugin>
   </gazebo>
 
-  <!-- Gazebo camera on camera_link -->
+  <!-- Front camera (ROS 2 plugin keys, 0.5 m far clip) -->
   <gazebo reference="camera_link">
-    <sensor name="front_cam" type="camera">
+    <sensor name="camera_sensor" type="camera">
       <pose>0 0 0 0 0 0</pose>
-      <camera>
+      <update_rate>10.0</update_rate>
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <camera name="front_cam">
         <horizontal_fov>1.047</horizontal_fov>
         <image>
           <width>640</width>
@@ -239,24 +207,21 @@
           <format>R8G8B8</format>
         </image>
         <clip>
-          <near>0.05</near>
+          <near>0.02</near>
           <far>0.5</far>
         </clip>
       </camera>
 
-      <always_on>true</always_on>
-      <visualize>true</visualize>
-      <update_rate>10.0</update_rate>
-
-      <plugin name="ros_camera" filename="libgazebo_ros_camera.so">
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
         <ros>
-          <remapping>image:=/camera/image_raw</remapping>
+          <namespace>/</namespace>
         </ros>
-        <camera_name>front_cam</camera_name>
         <frame_name>camera_link</frame_name>
+        <camera_name>camera</camera_name>
+        <image_topic_name>/camera/image_raw</image_topic_name>
+        <camera_info_topic_name>/camera/camera_info</camera_info_topic_name>
       </plugin>
     </sensor>
   </gazebo>
-
 
 </robot>

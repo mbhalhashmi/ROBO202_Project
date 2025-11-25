@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -6,63 +7,72 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    #Get the paths
     pkg_share = get_package_share_directory('description')
-    newbot_urdf_path = os.path.join(pkg_share, 'urdf', 'tricycle.urdf')
-    obstacle_urdf_path = os.path.join(pkg_share, 'urdf', 'obstacle.urdf')
+    tricycle_urdf = os.path.join(pkg_share, 'urdf', 'tricycle.urdf')
+    obstacle_urdf = os.path.join(pkg_share, 'urdf', 'obstacle.urdf')
 
-    #Read Tricycle Descritpion
-    with open(newbot_urdf_path, 'r') as file:
-        robot_description_content = file.read()
-        
+    with open(tricycle_urdf, 'r') as f:
+        robot_description_content = f.read()
+
+    gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')
+        )
+    )
+
+    rsp = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher_tricycle',
+        output='screen',
+        parameters=[{'robot_description': robot_description_content}, {'use_sim_time': True}],
+    )
+
+    spawn_tricycle = Node(
+        package='gazebo_ros',
+        executable='spawn_entity.py',
+        name='spawn_tricycle',
+        output='screen',
+        arguments=['-topic', 'robot_description', '-entity', 'tricycle', '-x', '0', '-y', '0', '-z', '0.1'],
+    )
+
+    spawn_obstacle = Node(
+        package='gazebo_ros',
+        executable='spawn_entity.py',
+        name='spawn_box',
+        output='screen',
+        arguments=['-file', obstacle_urdf, '-entity', 'obstacles', '-x', '0.8', '-y', '0', '-z', '0.0'],
+    )
+
+    # Your driver/teleop; force it to publish /cmd_vel_raw
+    driver = Node(
+        package='description',
+        executable='exe',       # your existing driver node
+        name='driver',
+        output='screen',
+        remappings=[('/cmd_vel', '/cmd_vel_raw')],  # remap driver output
+    )
+
+    # Camera-based safety filter: /cmd_vel_raw -> /cmd_vel (zeros if <= 0.5 m)
+    safety = Node(
+        package='description',
+        executable='camera_sub',
+        name='camera_safety',
+        output='screen',
+        parameters=[{
+            'stop_distance': 0.5,
+            'region_ratio': 0.33,
+            'depth_topic': '/camera/depth/image_raw',
+            'cmd_in': '/cmd_vel_raw',
+            'cmd_out': '/cmd_vel',
+        }],
+    )
+
     return LaunchDescription([
-        #Include Gazeboo Launch File
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')
-            ),
-        ),
-
-        #Robot State Publisher For Tricycle
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            name='robot_state_publisher_tricycle', 
-            output='screen',
-            parameters=[{'robot_description': robot_description_content}],
-        ),
-
-        #Spawn Tricycle from topic
-        Node(
-            package='gazebo_ros',
-            executable='spawn_entity.py',
-            name='spawn_tricycle',
-            output='screen',
-            arguments=['-topic', 'robot_description', '-entity', 'tricycle', '-x', '0', '-y', '0', '-z', '0.1'],
-
-        ),
-
-        #Spawn obstacles directly from file
-        Node(
-            package='gazebo_ros',
-            executable='spawn_entity.py',
-            name='spawn_box',
-            output='screen',
-            arguments=['-file', obstacle_urdf_path, '-entity', 'obstacles', '-x', '0', '-y', '0', '-z', '0.0'],
-        ),
-
-        # Node to get cmdvel
-        Node(
-            package='description',
-            executable='exe',
-            name='print_val',
-            output='screen',
-        ),
-        Node(
-            package='description',
-            executable='camera_sub',
-            name='camera_logger',
-            output='screen',
-        ),
-
+        gazebo,
+        rsp,
+        TimerAction(period=2.0, actions=[spawn_tricycle]),
+        TimerAction(period=2.5, actions=[spawn_obstacle]),
+        driver,
+        safety,
     ])
