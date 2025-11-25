@@ -50,4 +50,11 @@ def generate_launch_description():
             output='screen',
             arguments=['-file', obstacle_urdf_path, '-entity', 'obstacle', '-x', '2', '-y', '0', '-z', '0.1'],
         ),
+        # Node to get cmdvel
+        Node(
+            package='description',
+            executable='exe',
+            name='print_val',
+            output='screen',
+        ),
     ])
