@@ -42,14 +42,15 @@ def generate_launch_description():
 
         ),
 
-        #Spawn box directly from file
+        #Spawn obstacles directly from file
         Node(
             package='gazebo_ros',
             executable='spawn_entity.py',
             name='spawn_box',
             output='screen',
-            arguments=['-file', obstacle_urdf_path, '-entity', 'obstacle', '-x', '2', '-y', '0', '-z', '0.1'],
+            arguments=['-file', obstacle_urdf_path, '-entity', 'obstacles', '-x', '0', '-y', '0', '-z', '0.0'],
         ),
+
         # Node to get cmdvel
         Node(
             package='description',

@@ -1,88 +1,182 @@
 <?xml version="1.0"?>
 
 <robot name="box">
+    <!-- Anchor; no visual/collision so nothing appears at the origin -->
     <link name="base_link">
-        <visual>
-            <geometry>
-                <box size="0.3 0.3 0.7"/>
-            </geometry>
-            <origin xyz="-0.3 -0.3 0.1" rpy="0 0 0"/>
-            <material name="white"/>
-        </visual>
-        <collision>
-            <geometry>
-                <box size="0.3 0.3 0.7"/>
-            </geometry>
-            <origin xyz="-0.3 -0.3 0.1" rpy="0 0 0"/>
-        </collision>
         <inertial>
-            <mass value="1.0"/>
-            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+            <mass value="1e-6"/>
+            <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
         </inertial>
     </link>
-    
-    <link name="new_link">
+
+    <!-- Obstacle 1 -->
+    <link name="obstacle1">
         <visual>
             <geometry>
-                <box size="0.3 0.3 0.3"/>
+                <box size="0.4 0.4 0.4"/>
             </geometry>
-            <origin xyz="0.5 0.5 0.2" rpy="0 0 0"/>
-            <material name="white">
-                <color rgba="1 1 1 1"/>
+            <origin xyz="2.0 0.0 0.2" rpy="0 0 0"/>
+            <material name="red">
+                <color rgba="1 0 0 1"/>
             </material>
         </visual>
         <collision>
             <geometry>
-                <box size="0.3 0.3 0.3"/>
+                <box size="0.4 0.4 0.4"/>
             </geometry>
-            <origin xyz="0.5 0.5 0.2" rpy="0 0 0"/>
+            <origin xyz="2.0 0.0 0.2" rpy="0 0 0"/>
         </collision>
         <inertial>
             <mass value="1.0"/>
             <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
         </inertial>
     </link>
-    
-    <link name="obstacle1">
+
+    <!-- Obstacle 2 -->
+    <link name="obstacle2">
         <visual>
             <geometry>
                 <box size="0.5 0.5 0.5"/>
             </geometry>
-            <origin xyz="1 -0.5 0.2" rpy="0 0 0"/>
-            <material name="white">
-                <color rgba="1 1 1 1"/>
+            <origin xyz="0.0 2.5 0.25" rpy="0 0 0"/>
+            <material name="green">
+                <color rgba="0 1 0 1"/>
             </material>
         </visual>
         <collision>
             <geometry>
-                <box size="0.3 0.3 0.3"/>
+                <box size="0.5 0.5 0.5"/>
             </geometry>
-            <origin xyz="0.5 0.5 0.2" rpy="0 0 0"/>
+            <origin xyz="0.0 2.5 0.25" rpy="0 0 0"/>
         </collision>
         <inertial>
             <mass value="1.0"/>
             <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
         </inertial>
     </link>
-    
-    <joint name="base_to_new" type="fixed">
+
+    <!-- Obstacle 3 -->
+    <link name="obstacle3">
+        <visual>
+            <geometry>
+                <box size="0.35 0.35 0.35"/>
+            </geometry>
+            <origin xyz="0.0 -2.5 0.175" rpy="0 0 0"/>
+            <material name="blue">
+                <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.35 0.35 0.35"/>
+            </geometry>
+            <origin xyz="0.0 -2.5 0.175" rpy="0 0 0"/>
+        </collision>
+        <inertial>
+            <mass value="1.0"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+        </inertial>
+    </link>
+
+    <!-- Obstacle 4 -->
+    <link name="obstacle4">
+        <visual>
+            <geometry>
+                <box size="0.6 0.6 0.6"/>
+            </geometry>
+            <origin xyz="-3.0 1.8 0.3" rpy="0 0 0"/>
+            <material name="yellow">
+                <color rgba="1 1 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.6 0.6 0.6"/>
+            </geometry>
+            <origin xyz="-3.0 1.8 0.3" rpy="0 0 0"/>
+        </collision>
+        <inertial>
+            <mass value="1.0"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+        </inertial>
+    </link>
+
+    <!-- Obstacle 5 -->
+    <link name="obstacle5">
+        <visual>
+            <geometry>
+                <box size="0.45 0.45 0.45"/>
+            </geometry>
+            <origin xyz="-3.5 -1.8 0.225" rpy="0 0 0"/>
+            <material name="magenta">
+                <color rgba="1 0 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.45 0.45 0.45"/>
+            </geometry>
+            <origin xyz="-3.5 -1.8 0.225" rpy="0 0 0"/>
+        </collision>
+        <inertial>
+            <mass value="1.0"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+        </inertial>
+    </link>
+
+    <!-- Fixed joints -->
+    <joint name="base_to_obstacle1" type="fixed">
         <parent link="base_link"/>
-        <child link="new_link"/>
         <child link="obstacle1"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
-    
-    <gazebo reference="base_link">
+
+    <joint name="base_to_obstacle2" type="fixed">
+        <parent link="base_link"/>
+        <child link="obstacle2"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="base_to_obstacle3" type="fixed">
+        <parent link="base_link"/>
+        <child link="obstacle3"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="base_to_obstacle4" type="fixed">
+        <parent link="base_link"/>
+        <child link="obstacle4"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="base_to_obstacle5" type="fixed">
+        <parent link="base_link"/>
+        <child link="obstacle5"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Gazebo colors -->
+    <gazebo reference="obstacle1">
         <material>Gazebo/Red</material>
     </gazebo>
-    
-    <gazebo reference="new_link">
+
+    <gazebo reference="obstacle2">
+        <material>Gazebo/Green</material>
+    </gazebo>
+
+    <gazebo reference="obstacle3">
         <material>Gazebo/Blue</material>
     </gazebo>
 
-    <gazebo reference="obstacle1">
-        <material>Gazebo/White</material>
-    
+    <gazebo reference="obstacle4">
+        <material>Gazebo/Yellow</material>
+    </gazebo>
+
+    <gazebo reference="obstacle5">
+        <material>Gazebo/Purple</material>
+    </gazebo>
+
+    <!-- Make the whole model static so obstacles don’t move -->
     <gazebo>
         <static>true</static>
     </gazebo>
