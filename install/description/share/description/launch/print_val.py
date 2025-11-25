@@ -11,6 +11,8 @@ class PrintValue(Node):
 # Call the parentt constructor with super()
         super().__init__('first_node')
         self.vel_value = None
+        
+        # subscribe to /cmd_vel
         self.cmdvel=self.create_subscription(Twist, '/cmd_vel', self.cmdvel_callback,10)
         self.timer=self.create_timer(3.0, self.timer_callback)
 
@@ -30,5 +32,5 @@ def main(args=None):
     rclpy.shutdown() # Shutdown ROS2 communication
 
 # Calling the main() function
-if __name__='__main__':
+if __name__=='__main__':
     main()

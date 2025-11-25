@@ -24,8 +24,31 @@
     </inertial>
   </link>
 
-  <!-- Left Wheel -->
-  <link name="lwheel">
+  <!-- Steering fork -->
+  <link name="fork">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.1"/>
+      </geometry>
+      <origin xyz="0 0 -0.05" rpy="0 0 0"/>
+      <material name="gray">
+        <color rgba="0.6 0.6 0.6 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.1"/>
+      </geometry>
+      <origin xyz="0 0 -0.05" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.2"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <!-- Front Wheel -->
+  <link name="fwheel">
     <visual>
       <geometry>
         <cylinder length="0.04" radius="0.05"/>
@@ -42,13 +65,13 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </collision>
     <inertial>
-      <mass value="0.1"/>
+      <mass value="0.12"/>
       <inertia ixx="7.58e-5" ixy="0" ixz="0" iyy="7.58e-5" iyz="0" izz="1.25e-4"/>
     </inertial>
   </link>
 
-  <!-- Right Wheel -->
-  <link name="rwheel">
+  <!-- Back Right Wheel -->
+  <link name="bwheel_right">
     <visual>
       <geometry>
         <cylinder length="0.04" radius="0.05"/>
@@ -65,13 +88,13 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </collision>
     <inertial>
-      <mass value="0.1"/>
-      <inertia ixx="7.58e-5" ixy="0" ixz="0" iyy="7.58e-5" iyz="0" izz="1.25e-4"/>
+      <mass value="0.12"/>
+      <inertia ixx="9e-5" ixy="0" ixz="0" iyy="9e-5" iyz="0" izz="1.4e-4"/>
     </inertial>
   </link>
 
-  <!-- Back Wheel -->
-  <link name="bwheel">
+  <!-- Back Left Wheel -->
+  <link name="bwheel_left">
     <visual>
       <geometry>
         <cylinder length="0.04" radius="0.05"/>
@@ -88,40 +111,46 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </collision>
     <inertial>
-      <mass value="0.1"/>
-      <inertia ixx="7.58e-5" ixy="0" ixz="0" iyy="7.58e-5" iyz="0" izz="1.25e-4"/>
+      <mass value="0.12"/>
+      <inertia ixx="9e-5" ixy="0" ixz="0" iyy="9e-5" iyz="0" izz="1.4e-4"/>
     </inertial>
   </link>
 
   <!-- Joints -->
 
-  <!-- Left Wheel Joint -->
-  <joint name="base_to_lwheel" type="continuous">
+  <!-- Steering (rotate about Z) -->
+  <joint name="steer_joint" type="revolute">
     <parent link="base_link"/>
-    <child link="lwheel"/>
-    <!-- front-left: x forward ~+0.15, y left +0.15, z to touch ground -->
-    <origin xyz="0.15 0.15 -0.1" rpy="-1.5708 0 0"/>
-    <!-- spin axis -->
+    <child  link="fork"/>
+    <origin xyz="0.15 0 0.0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.6" upper="0.6" effort="10" velocity="2.0"/>
+    <dynamics damping="0.2"/>
+  </joint>
+
+  <!-- Front wheel spin (spin axis is +Y) -->
+  <joint name="fork_to_fwheel" type="continuous">
+    <parent link="fork"/>
+    <child  link="fwheel"/>
+    <origin xyz="0 0 -0.1" rpy="-1.5708 0 0"/>
     <axis xyz="0 0 1"/>
     <dynamics damping="0.0" friction="0.1"/>
   </joint>
 
-  <!-- Right Wheel Joint -->
+  <!-- Rear right wheel spin -->
   <joint name="base_to_rwheel" type="continuous">
     <parent link="base_link"/>
-    <child link="rwheel"/>
-    <!-- front-right: mirror on y -->
-    <origin xyz="0.15 -0.15 -0.1" rpy="-1.5708 0 0"/>
+    <child  link="bwheel_right"/>
+    <origin xyz="-0.17 -0.17 -0.1" rpy="-1.5708 0 0"/>
     <axis xyz="0 0 1"/>
     <dynamics damping="0.0" friction="0.1"/>
   </joint>
 
-  <!-- Back Wheel Joint -->
-  <joint name="base_to_bwheel" type="continuous">
+  <!-- Rear left wheel spin -->
+  <joint name="base_to_bwheel_left" type="continuous">
     <parent link="base_link"/>
-    <child link="bwheel"/>
-    <!-- rear center -->
-    <origin xyz="-0.17 0 -0.125" rpy="-1.5708 0 0"/>
+    <child  link="bwheel_left"/>
+    <origin xyz="-0.17 0.17 -0.1" rpy="-1.5708 0 0"/>
     <axis xyz="0 0 1"/>
     <dynamics damping="0.0" friction="0.1"/>
   </joint>
@@ -130,42 +159,49 @@
   <gazebo reference="base_link">
     <material>Gazebo/White</material>
   </gazebo>
-  <gazebo reference="lwheel">
+  <gazebo reference="fwheel">
     <material>Gazebo/Black</material>
   </gazebo>
-  <gazebo reference="rwheel">
+  <gazebo reference="bwheel_left">
     <material>Gazebo/Black</material>
   </gazebo>
-  <gazebo reference="bwheel">
-    <material>Gazebo/Black</material>
-  </gazebo>
+  <gazebo reference="bwheel_right">
+    <material>Gazebo/Black
+  </material></gazebo>
 
-<!-- Gazebo Plugins -->
+  <!-- Gazeboo Plugin -->
   <gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
-  </gazebo>
+    <!-- Plugin name and the library used-->
+    <plugin name="tricycle_system" filename="libgazebo_ros_diff_drive.so">
 
-  <gazebo>
-    <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <!-- ROS2 integration, remaps the topic that this plugin subcribes to for velocity commands -->
       <ros>
         <remapping>cmd_vel:=/cmd_vel</remapping>
       </ros>
 
-      <left_joint>base_to_lwheel</left_joint>
+      <!-- The two wheel joints that the plugin controls for motion -->
+      <left_joint>base_to_bwheel_left</left_joint>
       <right_joint>base_to_rwheel</right_joint>
-      <wheel_separation>0.4</wheel_separation>
-      <wheel_diameter>0.1</wheel_diameter>
-      
+
+      <!-- Physical Parameters of the robot -->
+      <!-- Distance between the two rear wheels -->
+      <wheel_separation>0.24</wheel_separation>
+      <!-- Diameter of each wheel -->
+      <wheel_diameter>0.10</wheel_diameter>
+
+      <!-- Limits for motion -->
+      <!-- Max torque applied to wheels-->
       <max_wheel_torque>200</max_wheel_torque>
+      <!-- Max angular acceleration of the wheels-->
       <max_wheel_acceleration>10.0</max_wheel_acceleration>
 
-      <odometry_frame>odom</odometry_frame>
-      <robot_base_frame>base_link</robot_base_frame>
-
+      <!-- Odometry Publishing Options (Tells ROS how far the robot moved )-->
+      <!-- Publish wheel odometry on /odom-->
       <publish_odom>true</publish_odom>
+      <!-- Publish the transform between odom and base_link-->
       <publish_odom_tf>true</publish_odom_tf>
-      <publish_wheel_tf>true</publish_wheel_tf>      
     </plugin>
   </gazebo>
+
 
 </robot>
