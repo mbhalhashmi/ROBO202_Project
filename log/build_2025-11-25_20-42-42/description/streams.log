@@ -1,0 +1,27 @@
+[0.693s] Invoking command in '/home/mohamed/ROBO202_Project/src/description': PYTHONPATH=/home/mohamed/ROBO202_Project/build/description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mohamed/ROBO202_Project/install/description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/description build --build-base /home/mohamed/ROBO202_Project/build/description/build install --record /home/mohamed/ROBO202_Project/build/description/install.log --single-version-externally-managed install_data
+[0.926s] running egg_info
+[0.926s] writing ../../build/description/description.egg-info/PKG-INFO
+[0.926s] writing dependency_links to ../../build/description/description.egg-info/dependency_links.txt
+[0.926s] writing entry points to ../../build/description/description.egg-info/entry_points.txt
+[0.927s] writing requirements to ../../build/description/description.egg-info/requires.txt
+[0.927s] writing top-level names to ../../build/description/description.egg-info/top_level.txt
+[0.928s] reading manifest file '../../build/description/description.egg-info/SOURCES.txt'
+[0.929s] writing manifest file '../../build/description/description.egg-info/SOURCES.txt'
+[0.929s] running build
+[0.929s] running build_py
+[0.929s] copying description/camera_subscriber.py -> /home/mohamed/ROBO202_Project/build/description/build/lib/description
+[0.929s] running install
+[0.930s] running install_lib
+[0.930s] copying /home/mohamed/ROBO202_Project/build/description/build/lib/description/camera_subscriber.py -> /home/mohamed/ROBO202_Project/install/description/lib/python3.10/site-packages/description
+[0.931s] byte-compiling /home/mohamed/ROBO202_Project/install/description/lib/python3.10/site-packages/description/camera_subscriber.py to camera_subscriber.cpython-310.pyc
+[0.932s] running install_data
+[0.932s] copying urdf/tricycle.urdf -> /home/mohamed/ROBO202_Project/install/description/share/description/urdf
+[0.932s] copying launch/gazebo.launch.py -> /home/mohamed/ROBO202_Project/install/description/share/description/launch
+[0.932s] running install_egg_info
+[0.934s] removing '/home/mohamed/ROBO202_Project/install/description/lib/python3.10/site-packages/description-0.0.0-py3.10.egg-info' (and everything under it)
+[0.934s] Copying ../../build/description/description.egg-info to /home/mohamed/ROBO202_Project/install/description/lib/python3.10/site-packages/description-0.0.0-py3.10.egg-info
+[0.935s] running install_scripts
+[0.961s] Installing camera_sub script to /home/mohamed/ROBO202_Project/install/description/lib/description
+[0.961s] Installing exe script to /home/mohamed/ROBO202_Project/install/description/lib/description
+[0.961s] writing list of installed files to '/home/mohamed/ROBO202_Project/build/description/install.log'
+[0.990s] Invoked command in '/home/mohamed/ROBO202_Project/src/description' returned '0': PYTHONPATH=/home/mohamed/ROBO202_Project/build/description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mohamed/ROBO202_Project/install/description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/description build --build-base /home/mohamed/ROBO202_Project/build/description/build install --record /home/mohamed/ROBO202_Project/build/description/install.log --single-version-externally-managed install_data

@@ -1,32 +1,36 @@
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy, HistoryPolicy
 from sensor_msgs.msg import Image
 
 class CameraSubscriber(Node):
     def __init__(self):
         super().__init__('camera_subscriber')
-        # Subscribe to the image topic published by Gazebo camera plugin
-        self.subscription = self.create_subscription(
-            Image,
-            '/camera/image_raw',          # must match plugin remapping
-            self.image_callback,
-            10)
-        self.subscription  # prevent unused variable warning
-        self.frame_count = 0
-        self.get_logger().info('Subscribed to /camera/image_raw')
 
-    def image_callback(self, msg):
-        self.frame_count += 1
-        self.get_logger().info(
-            f"Frame {self.frame_count}: "
-            f"size=({msg.width}x{msg.height}), "
-            f"encoding={msg.encoding}, "
-            f"timestamp={msg.header.stamp.sec}.{msg.header.stamp.nanosec}"
+        # SensorData QoS (matches Gazebo camera)
+        sensor_qos = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            durability=DurabilityPolicy.VOLATILE,
+            history=HistoryPolicy.KEEP_LAST,
+            depth=10
         )
 
-def main(args=None):
-    rclpy.init(args=args)
+        # Subscribe to BOTH common topic names; whichever exists will deliver frames
+        self.sub1 = self.create_subscription(Image, '/front_camera/image_raw',
+                                             self.cb, sensor_qos)
+        self.sub2 = self.create_subscription(Image, '/front_camera/image',
+                                             self.cb, sensor_qos)
+
+        self.get_logger().info('Camera subscriber up — watching /front_camera/image[_raw] with SensorData QoS')
+
+    def cb(self, msg: Image):
+        self.get_logger().info(
+            f"Image on topic received: {msg.width}x{msg.height} (stamp={msg.header.stamp.sec}.{msg.header.stamp.nanosec})"
+        )
+
+def main():
+    rclpy.init()
     node = CameraSubscriber()
     rclpy.spin(node)
     node.destroy_node()

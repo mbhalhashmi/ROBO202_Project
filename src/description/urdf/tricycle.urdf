@@ -137,7 +137,7 @@
     <parent link="base_link"/>
     <child  link="fork"/>
     <origin xyz="0.15 0 0.0" rpy="0 0 0"/>
-    <axis xyz="0 0 1"/>
+    <axis xyz="0 1 0"/>
     <limit lower="-0.6" upper="0.6" effort="10" velocity="2.0"/>
     <dynamics damping="0.2"/>
   </joint>
@@ -229,7 +229,7 @@
 
   <!-- Gazebo Camera Plugin -->
   <gazebo reference="camera_link">
-    <sensor name="sensor_camera" type="camera">
+    <sensor name="front_camera" type="camera">
       <pose>0 0 0 0 0 0</pose>
       <camera>
         <horizontal_fov>1.047</horizontal_fov>
@@ -240,24 +240,29 @@
         </image>
         <clip>
           <near>0.05</near>
-          <far>10.0</far>
+          <far>5.0</far>
         </clip>
       </camera>
 
+      <!-- MUST be true so the sensor actually runs -->
       <always_on>true</always_on>
       <visualize>true</visualize>
-      <update_rate>30.0</update_rate>
+      <update_rate>10.0</update_rate>
 
-      <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
+      <!-- ROS 2 Camera Plugin -->
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
         <ros>
-          <remapping>/sensor_camera/image_raw:=/camera/image_raw</remapping>
-          <remapping>/sensor_camera/camera_info:=/camera/camera_info</remapping>
+          <!-- Force root namespace so topics aren't under /tricycle/... -->
+          <namespace>/</namespace>
+
+          <!-- Standardize names to your project requirement -->
+          <remapping>image:=/camera/image_raw</remapping>
+          <remapping>camera_info:=/camera/camera_info</remapping>
         </ros>
         <frame_name>camera_link</frame_name>
       </plugin>
+
     </sensor>
   </gazebo>
-
-
 
 </robot>

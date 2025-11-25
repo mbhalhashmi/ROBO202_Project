@@ -59,10 +59,13 @@ def generate_launch_description():
             output='screen',
         ),
 
+        # Node to log camera images
         Node(
             package='description',
-            executable='camera_subscriber',
-            name='camera_subscriber',
+            executable='camera_sub',
+            name='camera_logger',
             output='screen',
-        )
+        ),
+
+
     ])

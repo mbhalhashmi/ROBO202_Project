@@ -1,4 +1,4 @@
 [console_scripts]
-camera_subscriber = description.camera_subscriber:main
+camera_sub = description.camera_subscriber:main
 exe = description.print_val:main
 
